@@ -13,8 +13,6 @@ export type Client = ReturnType<typeof github.getOctokit>
  * @property ignoreKeywords 제외할 단어 목록
  * @property useReviewGroups 리뷰 그룹 사용 여부
  * @property useAssigneeGroups 담당자 그룹 사용 여부
- * @property keywordLists PR 제목에 따라 리뷰어를 지정할 키워드 목록
- * @property keywordGroups PR 제목에 따라 리뷰어 그룹을 지정할 키워드 목록
  * @property reviewGroups 리뷰어 그룹 목록
  * @property assigneeGroups 담당자 그룹 목록
  * @property runOnDraft Draft PR에도 워크플로우를 실행할지 여부
@@ -29,8 +27,6 @@ export interface Config {
     ignoreKeywords: string[]
     useReviewGroups: boolean
     useAssigneeGroups: boolean
-    keywordLists: { [key: string]: string[] }
-    keywordGroups: { [key: string]: string[] }
     reviewGroups: { [key: string]: string[] }
     assigneeGroups: { [key: string]: string[] }
     runOnDraft?: boolean

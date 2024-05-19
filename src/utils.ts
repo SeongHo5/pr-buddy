@@ -127,8 +127,6 @@ export async function fetchConfigFileFrom(client: Client, options: ConfigOption)
         ignoreKeywords: [],
         useReviewGroups: false,
         useAssigneeGroups: false,
-        keywordLists: {},
-        keywordGroups: {},
         reviewGroups: {},
         assigneeGroups: {},
         runOnDraft: false,
