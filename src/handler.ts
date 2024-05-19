@@ -43,7 +43,7 @@ export async function startPRAutoAssign(client: Client, context: Context, config
 
     if (enableAutoAssignReviewers) {
         try {
-            const reviewers: string[] = utils.chooseReviewers(owner, config);
+            const reviewers: string[] = utils.selectReviewers(owner, config);
 
             if (reviewers.length > 0) {
                 await pr.assignReviewers(reviewers);
@@ -57,7 +57,7 @@ export async function startPRAutoAssign(client: Client, context: Context, config
     }
     if (enableAutoAssignAssignees) {
         try {
-            const assignees: string[] = utils.chooseAssignees(owner, config);
+            const assignees: string[] = utils.selectAssignees(owner, config);
 
             if (assignees.length > 0) {
                 await pr.assignAssignees(assignees);

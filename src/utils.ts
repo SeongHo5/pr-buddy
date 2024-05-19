@@ -8,7 +8,7 @@ import {Client, Config, ConfigOption} from './types'
  * @param config Config 정보
  * @return 선택된 리뷰어 목록
  */
-export function chooseReviewers(owner: string, config: Config): string[] {
+export function selectReviewers(owner: string, config: Config): string[] {
     const {
         useReviewGroups,
         reviewGroups,
@@ -26,7 +26,7 @@ export function chooseReviewers(owner: string, config: Config): string[] {
  * @param owner PR을 생성한 유저
  * @param config Config 정보
  */
-export function chooseAssignees(owner: string, config: Config): string[] {
+export function selectAssignees(owner: string, config: Config): string[] {
     const {
         useAssigneeGroups,
         assigneeGroups,
