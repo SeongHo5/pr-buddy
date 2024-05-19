@@ -55,10 +55,10 @@ export async function startPRAutoAssign(
 
     if (enableAutoAssignReviewers) {
         try {
-            const reviewers: string[] = utils.chooseReviewers(title, owner, config);
+            const reviewers: string[] = utils.chooseReviewers(owner, config);
 
             if (reviewers.length > 0) {
-                await pr.addReviewers(reviewers);
+                await pr.assignReviewers(reviewers);
                 core.info(`PR #${number}에 다음 리뷰어를 자동으로 추가했습니다: ${reviewers.join(', ')}`);
             }
         } catch (error) {
@@ -73,7 +73,7 @@ export async function startPRAutoAssign(
             const assignees: string[] = utils.chooseAssignees(owner, config);
 
             if (assignees.length > 0) {
-                await pr.addAssignees(assignees);
+                await pr.assignAssignees(assignees);
                 core.info(`PR #${number}에 다음 담당자를 자동으로 추가했습니다: ${assignees.join(', ')}`);
             }
         } catch (error) {

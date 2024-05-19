@@ -8,11 +8,11 @@ export class PullRequest {
     private readonly context: Context;
 
     constructor(client: Client, context: Context) {
-        this.client = client
-        this.context = context
+        this.client = client;
+        this.context = context;
     }
 
-    async addReviewers(reviewers: string[]): Promise<void> {
+    async assignReviewers(reviewers: string[]): Promise<void> {
         const { owner, repo, number: pull_number } = this.context.issue;
         const result = await this.client.rest.pulls.requestReviewers({
             owner,
@@ -23,7 +23,7 @@ export class PullRequest {
         core.debug(JSON.stringify(result));
     }
 
-    async addAssignees(assignees: string[]): Promise<void> {
+    async assignAssignees(assignees: string[]): Promise<void> {
         const { owner, repo, number: issue_number } = this.context.issue;
         const result = await this.client.rest.issues.addAssignees({
             owner,
