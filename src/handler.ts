@@ -5,7 +5,7 @@ import {PullRequest} from './pull_request'
 import {Client, Config} from './types'
 import {PullRequestEvent} from '@octokit/webhooks-types'
 
-export async function handlePullRequest(
+export async function startPRAutoAssign(
     client: Client,
     context: Context,
     config: Config
