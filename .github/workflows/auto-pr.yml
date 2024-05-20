@@ -6,11 +6,11 @@ on:
       - main
     types: [ opened, ready_for_review ]
 
-  jobs:
-    auto-assign:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Assign PR Reviewer & Assignee
-          uses: SeongHo5/auto-assign-pr@v0.0.1-SNAPSHOT
-          with:
-            configuration-path: .github/auto-assign.yml
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign PR Reviewer & Assignee
+        uses: SeongHo5/auto-assign-pr@v0.0.1-SNAPSHOT
+        with:
+          configuration-path: .github/auto-assign.yml
