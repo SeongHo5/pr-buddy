@@ -2,6 +2,8 @@ name: Assign PR Reviewer & Assignee
 
 on:
   pull_request:
+    branches:
+      - main
     types: [ opened, ready_for_review ]
 
   jobs:
@@ -9,6 +11,6 @@ on:
       runs-on: ubuntu-latest
       steps:
         - name: Assign PR Reviewer & Assignee
-          uses: SeongHo5/auto-assign-pr@{target_version}
+          uses: SeongHo5/auto-assign-pr@v0.0.1-SNAPSHOT
           with:
             configuration-path: .github/auto-assign.yml
