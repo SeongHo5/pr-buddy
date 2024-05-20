@@ -1,0 +1,5 @@
+enableAutoAssignReviewers: true
+numberOfReviewers: 0
+reviewers: ['SeongHo5','test1','test2']
+enableAutoAssignAssignees: 'author'
+runOnDraft: false
