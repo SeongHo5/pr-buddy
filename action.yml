@@ -1,9 +1,15 @@
 name: 'Auto Assign PR Reviewer & Assignee'
 description: 'PR 리뷰어와 담당자를 자동으로 지정합니다.'
+author: 'SeongHo5'
 inputs:
+  repo-token:
+    description: 'A token for the repo'
+    default: ${{ github.token }}
+    required: false
   configuration-path:
     description: 'The path to the configuration file.'
     required: true
+    default: '.github/auto-assign.yml'
 runs:
   using: 'node20'
   main: 'dist/main.js'
