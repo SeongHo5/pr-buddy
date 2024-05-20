@@ -1,7 +1,7 @@
 {
   "name": "auto-assign-pr",
-  "version": "0.0.1-SNAPSHOT",
-  "description": "",
+  "version": "0.0.3",
+  "description": "PR 리뷰어와 담당자를 자동으로 지정합니다.",
   "main": "src/main.ts",
   "scripts": {
     "build": "tsc",
@@ -17,7 +17,8 @@
     "@octokit/rest": "^20.1.1",
     "@octokit/webhooks-types": "^7.5.1",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tsc": "^2.0.4"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
