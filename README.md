@@ -2,7 +2,7 @@
 
 GitHub Actions를 활용하여 PR 리뷰어와 담당자를 자동으로 지정할 수 있습니다.
 
-<img alt="banner" src="/docs/images/prbuddy.png" width="800" height="350">
+![PR Buddy](/docs/images/prbuddy.png)
 
 GitHub Actions Workflow Template
 
