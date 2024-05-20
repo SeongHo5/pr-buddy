@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Assign PR Reviewer & Assignee
-        uses: SeongHo5/auto-assign-pr@v0.0.2
+        uses: SeongHo5/auto-assign-pr@v0.0.3
         with:
           configuration-path: .github/auto-assign.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBS_TOKEN }}
