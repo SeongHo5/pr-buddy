@@ -1,4 +1,4 @@
-name: Assign PR Reviewer & Assignee
+name: [TeamName] Auto Assign PR Reviewer & Assignee
 
 on:
   pull_request:
@@ -15,6 +15,6 @@ jobs:
       issues: write
     steps:
       - name: Assign PR Reviewer & Assignee
-        uses: SeongHo5/auto-assign-pr@v0.0.3
+        uses: SeongHo5/pr-buddy@v1.0
         with:
-          configuration-path: .github/auto-assign.yml
+          config: .github/auto-assign.yml

@@ -1,8 +1,11 @@
-## Auto-Assign-PR
+## PR Buddy
 
-GitHub Actions Workflow 작성 Template
+GitHub Actions를 활용하여 PR 리뷰어와 담당자를 자동으로 지정할 수 있습니다.
+
+GitHub Actions Workflow Template
 
 ```yaml
+# .github/workflows/{workflow_name}.yml
 name: Assign PR Reviewer & Assignee
 
 on:
@@ -15,16 +18,23 @@ on:
   jobs:
     auto-assign:
       runs-on: ubuntu-latest
+      # GITHUB_TOKEN 또는 PERSONAL_ACCESS_TOKEN 모두 
+      # content:read, pull-requests:write 권한이 반드시 필요합니다.
+      permissions: 
+        contents: read
+        pull-requests: write
       steps:
         - name: Assign PR Reviewer & Assignee
-          uses: SeongHo5/auto-assign-pr@{target_version}
+          uses: SeongHo5/pr-buddy@{target_version}
           with:
-            configuration-path: .github/auto-assign.yml # (상대)경로를 정확하게 지정해주세요.
+            configuration-path: .github/auto-assign.yml # 경로를 정확하게 지정해주세요.
 ```
 
-Configuration 파일 작성 Template
+Configuration Template
 
 ```yaml
+# .github/auto-assign.yml
+
 # ===== Reviwers 관련 설정 =====
 # 리뷰어 자동 지정 활성화 여부
 enableAutoAssignReviewers: boolean
@@ -49,12 +59,12 @@ numberOfAssignees: number
 # Assignee로 지정될 수 있는 후보 목록 (Optional)
 # enableAutoAssignAssignees가 'author'로 설정된 경우 작성할 필요 없음
 assignees: string[]
-  
+
 # ===== 기타 =====
 # Auto-Assign에서 제외할 키워드 목록
 # 이 키워드가 PR 제목에 포함되어 있으면 Auto-Assign이 적용되지 않습니다.
 ignoreKeywords: string[]
 
 # Draft PR에도 Auto-Assign을 적용할지 여부
-runOnDraft?: boolean
+runOnDraft: boolean
 ```

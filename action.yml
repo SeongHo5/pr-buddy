@@ -1,4 +1,4 @@
-name: 'Auto Assign PR Reviewer & Assignee'
+name: 'PR Buddy'
 description: 'PR 리뷰어와 담당자를 자동으로 지정합니다.'
 author: 'SeongHo5'
 inputs:
@@ -13,3 +13,6 @@ inputs:
 runs:
   using: 'node20'
   main: 'dist/index.js'
+branding:
+  color: orange
+  icon: 'user-plus'

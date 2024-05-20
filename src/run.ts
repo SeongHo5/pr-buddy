@@ -8,7 +8,7 @@ export async function run() {
     try {
         const token: string = core.getInput('repo-token', {required: true})
         const configPath: string = core.getInput(
-            'configuration-path',
+            'config',
             {required: true,}
         );
 
