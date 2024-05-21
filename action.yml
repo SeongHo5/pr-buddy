@@ -6,7 +6,7 @@ inputs:
     description: 'A token for the repo'
     default: ${{ github.token }}
     required: false
-  configuration-path:
+  config:
     description: 'The path to the configuration file.'
     required: true
     default: '.github/auto-assign.yml'
