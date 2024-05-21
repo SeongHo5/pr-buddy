@@ -29,7 +29,7 @@ on:
         - name: Assign PR Reviewer & Assignee
           uses: SeongHo5/pr-buddy@{target_version}
           with:
-            configuration-path: .github/auto-assign.yml # 경로를 정확하게 지정해주세요.
+            config: .github/auto-assign.yml # 경로를 정확하게 지정해주세요.(파일명이 반드시 동일할 필요는 없어요.)
 ```
 
 Configuration Template
