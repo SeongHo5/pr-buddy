@@ -5,7 +5,7 @@ import {PullRequest} from './pull_request'
 import {Client, Config} from './types'
 import {PullRequestEvent} from '@octokit/webhooks-types'
 
-export async function startPRAutoAssign(client: Client, context: Context, config: Config) {
+export async function doAutoAssign(client: Client, context: Context, config: Config) {
     if (!context.payload.pull_request) {
         throw new Error('the webhook payload is not exist');
     }
@@ -20,8 +20,12 @@ export async function startPRAutoAssign(client: Client, context: Context, config
         assigneeGroups,
         enableAutoAssignReviewers,
         enableAutoAssignAssignees,
+        numberOfReviewers,
         runOnDraft,
     } = config;
+    const owner = user.login;
+    const pr = new PullRequest(client, context);
+    const currentReviewers = await pr.getReviewers();
 
     if (ignoreKeywords && utils.includesIgnoreKeywordsList(title, ignoreKeywords)) {
         core.info('PR 제목에 제외 설정한 단어가 포함되어 워크플로우를 건너뜁니다.');
@@ -31,6 +35,10 @@ export async function startPRAutoAssign(client: Client, context: Context, config
         core.info('PR 타입이 Draft이므로 워크플로우를 건너뜁니다.');
         return;
     }
+    if (currentReviewers.length > numberOfReviewers) {
+        core.info('이미 리뷰어가 지정되어 있으므로 워크플로우를 건너뜁니다.');
+        return;
+    }
     if (useReviewGroups && !reviewGroups) {
         throw new Error("[설정 오류]'useReviewGrups'가 true로 설정되어 있으므로 리뷰 그룹을 사용하려면 'reviewGroups' 변수를 설정해야 합니다.");
     }
@@ -38,11 +46,10 @@ export async function startPRAutoAssign(client: Client, context: Context, config
         throw new Error("[설정 오류]'useAssigneeGroups'가 true로 설정되어 있으므로 담당자 그룹을 사용하려면 'assigneeGroups' 변수를 설정해야 합니다.");
     }
 
-    const owner = user.login;
-    const pr = new PullRequest(client, context);
 
     if (enableAutoAssignReviewers) {
         try {
+            config.numberOfReviewers -= currentReviewers.length;
             const reviewers: string[] = utils.selectReviewers(owner, config);
 
             if (reviewers.length > 0) {

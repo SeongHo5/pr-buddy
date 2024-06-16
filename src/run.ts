@@ -22,7 +22,7 @@ export async function run() {
         };
         const config: Config = await utils.fetchConfigFileFrom(client, option);
 
-        await handler.startPRAutoAssign(client, github.context, config);
+        await handler.doAutoAssign(client, github.context, config);
     } catch (error) {
         if (error instanceof Error) {
             core.setFailed(error.message);
