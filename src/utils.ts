@@ -64,7 +64,8 @@ export function selectUsersFromGroups(
     groups: { [key: string]: string[] } | undefined,
     desiredNumber: number
 ): string[] {
-    return Object.values(groups).flatMap((group: string[]) => selectUsers(owner, group, desiredNumber));
+    return Object.values(groups)
+        .flatMap((group) => selectUsers(owner, group, desiredNumber));
 }
 
 /**
@@ -75,13 +76,11 @@ export function selectUsersFromGroups(
  */
 export function selectUsers(filterUser: string = '', candidates: string[], desiredNumber: number): string[] {
     // PR을 생성한 유저는 후보자 목록에서 제외합니다.
-    const filteredCandidates: string[] = candidates.filter((reviewer: string): boolean => reviewer.toLowerCase() !== filterUser.toLowerCase());
+    const filteredCandidates: string[] = candidates.filter((reviewer) => reviewer.toLowerCase() !== filterUser.toLowerCase());
 
-    if (desiredNumber === 0) {
-        return filteredCandidates;
-    }
-
-    return _.sampleSize(filteredCandidates, desiredNumber);
+    return desiredNumber === 0
+        ? filteredCandidates
+        : _.sampleSize(filteredCandidates, desiredNumber);
 }
 
 /**
@@ -90,7 +89,7 @@ export function selectUsers(filterUser: string = '', candidates: string[], desir
  * @param skipKeywords 제외할 단어 목록
  */
 export function includesIgnoreKeywordsList(title: string, skipKeywords: string[]): boolean {
-    return skipKeywords.some((skipKeyword: string): boolean => title.toLowerCase().includes(skipKeyword.toLowerCase()));
+    return skipKeywords.some((skipKeyword) => title.toLowerCase().includes(skipKeyword.toLowerCase()));
 }
 
 
