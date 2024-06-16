@@ -29,6 +29,7 @@ const sampleConfigOption: ConfigOption = {
 
 describe('Config 인터페이스 테스트', () => {
     it('동일한 Config 객체가 생성되어야 한다.', () => {
+        // Given
         const expectedConfig: Config = {
             enableAutoAssignReviewers: true,
             enableAutoAssignAssignees: 'author',
@@ -48,10 +49,12 @@ describe('Config 인터페이스 테스트', () => {
             runOnDraft: false
         };
 
+        // When & Then
         expect(sampleConfig).toEqual(expectedConfig);
     });
 
     it('동일한 ConfigOption 객체가 생성되어야 한다.', () => {
+        // Given
         const expectedConfigOption: ConfigOption = {
             owner: 'owner',
             repo: 'repo',
@@ -59,6 +62,7 @@ describe('Config 인터페이스 테스트', () => {
             ref: 'pjt-01-develop'
         };
 
+        // When & Then
         expect(sampleConfigOption).toEqual(expectedConfigOption);
     });
 });
