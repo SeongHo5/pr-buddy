@@ -50542,17 +50542,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.startPRAutoAssign = void 0;
+exports.doAutoAssign = void 0;
 const core = __importStar(__nccwpck_require__(9467));
 const utils = __importStar(__nccwpck_require__(8984));
 const pull_request_1 = __nccwpck_require__(6502);
-async function startPRAutoAssign(client, context, config) {
+async function doAutoAssign(client, context, config) {
     if (!context.payload.pull_request) {
         throw new Error('the webhook payload is not exist');
     }
     const { pull_request: event } = context.payload;
     const { title, draft, user, number } = event;
-    const { ignoreKeywords, useReviewGroups, useAssigneeGroups, reviewGroups, assigneeGroups, enableAutoAssignReviewers, enableAutoAssignAssignees, runOnDraft, } = config;
+    const { ignoreKeywords, useReviewGroups, useAssigneeGroups, reviewGroups, assigneeGroups, enableAutoAssignReviewers, enableAutoAssignAssignees, numberOfReviewers, runOnDraft, } = config;
+    const owner = user.login;
+    const pr = new pull_request_1.PullRequest(client, context);
+    const currentReviewers = await pr.getReviewers();
     if (ignoreKeywords && utils.includesIgnoreKeywordsList(title, ignoreKeywords)) {
         core.info('PR 제목에 제외 설정한 단어가 포함되어 워크플로우를 건너뜁니다.');
         return;
@@ -50561,16 +50564,19 @@ async function startPRAutoAssign(client, context, config) {
         core.info('PR 타입이 Draft이므로 워크플로우를 건너뜁니다.');
         return;
     }
+    if (currentReviewers.length > numberOfReviewers) {
+        core.info('이미 리뷰어가 지정되어 있으므로 워크플로우를 건너뜁니다.');
+        return;
+    }
     if (useReviewGroups && !reviewGroups) {
         throw new Error("[설정 오류]'useReviewGrups'가 true로 설정되어 있으므로 리뷰 그룹을 사용하려면 'reviewGroups' 변수를 설정해야 합니다.");
     }
     if (useAssigneeGroups && !assigneeGroups) {
         throw new Error("[설정 오류]'useAssigneeGroups'가 true로 설정되어 있으므로 담당자 그룹을 사용하려면 'assigneeGroups' 변수를 설정해야 합니다.");
     }
-    const owner = user.login;
-    const pr = new pull_request_1.PullRequest(client, context);
     if (enableAutoAssignReviewers) {
         try {
+            config.numberOfReviewers -= currentReviewers.length;
             const reviewers = utils.selectReviewers(owner, config);
             if (reviewers.length > 0) {
                 await pr.assignReviewers(reviewers);
@@ -50598,7 +50604,7 @@ async function startPRAutoAssign(client, context, config) {
         }
     }
 }
-exports.startPRAutoAssign = startPRAutoAssign;
+exports.doAutoAssign = doAutoAssign;
 
 
 /***/ }),
@@ -50659,6 +50665,15 @@ class PullRequest {
         });
         core.debug(JSON.stringify(result));
     }
+    async getReviewers() {
+        const { owner, repo, number: pull_number } = this.context.issue;
+        const result = await this.client.rest.pulls.listRequestedReviewers({
+            owner,
+            repo,
+            pull_number,
+        });
+        return result.data.users.map((user) => user.login);
+    }
 }
 exports.PullRequest = PullRequest;
 
@@ -50712,7 +50727,7 @@ async function run() {
             ref: sha
         };
         const config = await utils.fetchConfigFileFrom(client, option);
-        await handler.startPRAutoAssign(client, github.context, config);
+        await handler.doAutoAssign(client, github.context, config);
     }
     catch (error) {
         if (error instanceof Error) {
@@ -50785,15 +50800,15 @@ function selectAssignees(owner, config) {
 }
 exports.selectAssignees = selectAssignees;
 function selectUsersFromGroups(owner, groups, desiredNumber) {
-    return Object.values(groups).flatMap((group) => selectUsers(owner, group, desiredNumber));
+    return Object.values(groups)
+        .flatMap((group) => selectUsers(owner, group, desiredNumber));
 }
 exports.selectUsersFromGroups = selectUsersFromGroups;
 function selectUsers(filterUser = '', candidates, desiredNumber) {
     const filteredCandidates = candidates.filter((reviewer) => reviewer.toLowerCase() !== filterUser.toLowerCase());
-    if (desiredNumber === 0) {
-        return filteredCandidates;
-    }
-    return lodash_1.default.sampleSize(filteredCandidates, desiredNumber);
+    return desiredNumber === 0
+        ? filteredCandidates
+        : lodash_1.default.sampleSize(filteredCandidates, desiredNumber);
 }
 exports.selectUsers = selectUsers;
 function includesIgnoreKeywordsList(title, skipKeywords) {

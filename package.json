@@ -1,6 +1,6 @@
 {
   "name": "pr-buddy",
-  "version": "1.0",
+  "version": "1.1",
   "description": "PR 리뷰어와 담당자를 자동으로 지정합니다.",
   "main": "src/main.ts",
   "scripts": {
