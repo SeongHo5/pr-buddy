@@ -20,8 +20,8 @@ on:
   jobs:
     auto-assign:
       runs-on: ubuntu-latest
-      # GITHUB_TOKEN 또는 PERSONAL_ACCESS_TOKEN 모두 
-      # content:read, pull-requests:write 권한이 반드시 필요합니다.
+      # GITHUB_TOKEN 또는 PERSONAL_ACCESS_TOKEN 
+      # content:read, pull-requests:write 권한이 꼭 필요해요!
       permissions: 
         contents: read
         pull-requests: write
@@ -29,7 +29,7 @@ on:
         - name: Assign PR Reviewer & Assignee
           uses: SeongHo5/pr-buddy@{target_version}
           with:
-            config: .github/auto-assign.yml # 경로를 정확하게 지정해주세요.(파일명이 반드시 동일할 필요는 없어요.)
+            config: .github/auto-assign.yml # 경로를 정확하게 지정해주세요.(파일명은 반드시 동일할 필요는 없어요.)
 ```
 
 Configuration Template
@@ -64,9 +64,9 @@ assignees: string[]
 
 # ===== 기타 =====
 # Auto-Assign에서 제외할 키워드 목록
-# 이 키워드가 PR 제목에 포함되어 있으면 Auto-Assign이 적용되지 않습니다.
+# 이 키워드가 PR 제목에 포함되어 있으면 자동 지정 기능이 동작하지 않습니다.
 ignoreKeywords: string[]
 
-# Draft PR에도 Auto-Assign을 적용할지 여부
+# Draft PR에도 자동 지정 기능을 적용할지 여부
 runOnDraft: boolean
 ```
